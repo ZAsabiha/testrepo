@@ -123,7 +123,6 @@ class _HerCareHomePageState extends State<HerCareHomePage> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     const double headerHeight = 250.0;
@@ -170,30 +169,6 @@ class _HerCareHomePageState extends State<HerCareHomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          // Create data map
-          final featureData = {
-            'title': 'Find a Doctor',
-            'emoji': '👩‍⚕️',
-            // Add other info if needed, e.g., route
-          };
-
-          // Add to history
-          HistoryManager().addHistory(
-            'Healthcare', // category
-            featureData,  // data
-          );
-        },
-        backgroundColor: kPrimaryDarkPink,
-        icon: const Icon(Icons.add, color: Colors.white),
-        label: const Text(
-          "Find a Doctor",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
-        ),
-      ),
-
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
