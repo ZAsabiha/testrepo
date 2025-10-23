@@ -2,21 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'dart:async';
-import 'MorningRoutine.dart'; // Ensure MorningRoutine.dart contains FiveMinuteMorningCalmScreen
-import 'SleepStories.dart'; // Ensure SleepStories.dart contains SleepStoriesScreen
+import 'MorningRoutine.dart';
+import 'SleepStories.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'MoodFood.dart'; // Import MoodFood.dart for navigation
-import 'HydrationChallenge.dart'; // Import HydrationChallenge.dart for navigation
+import 'MoodFood.dart';
+import 'HydrationChallenge.dart';
 import 'constants/colors.dart';
 import 'travel.dart';
 import 'exercise.dart';
 import 'guthealth.dart';
 import 'skincare.dart';
-// Theme Colors (Defined Locally for independence)
-
-// ====================================================================
-// MENTAL HEALTH SCREEN (With Conditional Custom Fields and Dynamic Music)
-// ====================================================================
+import 'MentalSupport.dart'; // Import for MentalSupportScreen
 
 class MentalHealthScreen extends StatefulWidget {
   const MentalHealthScreen({super.key});
@@ -28,10 +24,9 @@ class MentalHealthScreen extends StatefulWidget {
 class _MentalHealthScreenState extends State<MentalHealthScreen> {
   String _selectedCategory = 'Meditation';
   final AudioPlayer _audioPlayer = AudioPlayer();
-  String? _currentlyPlayingUrl; // Track the currently playing music URL
-  bool _isPlaying = false; // Track play/pause state
+  String? _currentlyPlayingUrl;
+  bool _isPlaying = false;
 
-  // Data structure including a placeholder for the "Add Custom" card in EACH list
   final Map<String, List<Map<String, dynamic>>> contentData = {
     'Meditation': [
       {
@@ -52,7 +47,6 @@ class _MentalHealthScreenState extends State<MentalHealthScreen> {
         'icon': Icons.spa_rounded,
         'color': kPrimaryDarkPink,
       },
-
     ],
     'Music': [
       {
@@ -76,7 +70,6 @@ class _MentalHealthScreenState extends State<MentalHealthScreen> {
         'color': kCardMentalTeal.withOpacity(0.8),
         'audioUrl': 'https://cdn.pixabay.com/audio/2022/08/02/audio_d2b76c6e95.mp3',
       },
-
     ],
     'Exercise': [
       {
@@ -97,7 +90,6 @@ class _MentalHealthScreenState extends State<MentalHealthScreen> {
         'icon': Icons.chair_rounded,
         'color': kCardGamesPurple.withOpacity(0.9)
       },
-
     ],
     'Diet': [
       {
@@ -118,7 +110,6 @@ class _MentalHealthScreenState extends State<MentalHealthScreen> {
         'icon': Icons.healing_rounded,
         'color': kCardPeriodRed
       },
-
     ],
     'Travel / Tours': [
       {
@@ -133,9 +124,7 @@ class _MentalHealthScreenState extends State<MentalHealthScreen> {
         'icon': Icons.beach_access_rounded,
         'color': kCardPregnancyOrange
       },
-
     ],
-    // + NEW: Skincare category
     'Skincare': [
       {
         'title': 'Morning Glow (SPF)',
@@ -155,9 +144,16 @@ class _MentalHealthScreenState extends State<MentalHealthScreen> {
         'icon': Icons.opacity_rounded,
         'color': kCardMentalTeal,
       },
-
     ],
-
+    // NEW: Chat with Expert category
+    'Chat with Expert': [
+      {
+        'title': 'Mental Support',
+        'subtitle': 'Get help & support',
+        'icon': Icons.favorite_rounded,
+        'color': kPrimaryDarkPink,
+      },
+    ],
   };
 
   @override
@@ -166,7 +162,6 @@ class _MentalHealthScreenState extends State<MentalHealthScreen> {
     super.dispose();
   }
 
-  // Play or pause audio for a given URL
   Future<void> _toggleAudio(String audioUrl) async {
     try {
       if (_currentlyPlayingUrl == audioUrl && _isPlaying) {
@@ -193,7 +188,6 @@ class _MentalHealthScreenState extends State<MentalHealthScreen> {
     }
   }
 
-  // Launch URL for external services
   Future<void> _launchUrl(String url) async {
     final Uri uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
@@ -205,7 +199,6 @@ class _MentalHealthScreenState extends State<MentalHealthScreen> {
     }
   }
 
-  // Custom input fields builder
   List<Widget> _buildCustomFields(String category) {
     List<Widget> fields = [
       TextFormField(
@@ -271,13 +264,11 @@ class _MentalHealthScreenState extends State<MentalHealthScreen> {
     return fields;
   }
 
-  // Variables to store custom input
   String _customTitle = '';
   String _customSubtitle = '';
   String _customAudioUrl = '';
   String _customLink = '';
 
-  // Updated function for custom addition dialog
   void _showCustomAddDialog(String category) {
     showDialog(
       context: context,
@@ -311,10 +302,9 @@ class _MentalHealthScreenState extends State<MentalHealthScreen> {
                     return;
                   }
 
-                  IconData customIcon = Icons.help_outline; // Default icon
-                  Color customColor = kPrimaryDarkPink; // Default color
+                  IconData customIcon = Icons.help_outline;
+                  Color customColor = kPrimaryDarkPink;
 
-                  // Choose icon and color based on category
                   switch (category) {
                     case 'Meditation':
                       customIcon = Icons.self_improvement_rounded;
@@ -348,16 +338,6 @@ class _MentalHealthScreenState extends State<MentalHealthScreen> {
                   if (category == 'Music') {
                     newItem['audioUrl'] = _customAudioUrl;
                   }
-                  if (category == 'Travel / Tours') {
-                    Navigator.pushNamed(context, '/travel');
-                  } else if (category == 'Exercise') {
-                    Navigator.pushNamed(context, '/exercise');
-                  } else if (category == 'Diet') {
-                    Navigator.pushNamed(context, '/diet');
-                  } else if (category == 'Meditation') {
-                    Navigator.pushNamed(context, '/meditation');
-                  }
-
 
                   setState(() {
                     contentData[category]!.insert(contentData[category]!.length - 1, newItem);
@@ -428,7 +408,6 @@ class _MentalHealthScreenState extends State<MentalHealthScreen> {
     );
   }
 
-  /// Builds the horizontal scrolling bar for category selection.
   Widget _buildCategorySegmentedControl() {
     return Container(
       height: 50,
@@ -478,7 +457,6 @@ class _MentalHealthScreenState extends State<MentalHealthScreen> {
     );
   }
 
-  /// Builds the horizontal scrolling list of content cards.
   Widget _buildHorizontalContentList(List<Map<String, dynamic>> contentList) {
     return SizedBox(
       height: 250,
@@ -499,7 +477,6 @@ class _MentalHealthScreenState extends State<MentalHealthScreen> {
     );
   }
 
-  /// Builds the special "Add Custom" content card.
   Widget _buildCustomAddCard(String category) {
     return GestureDetector(
       onTap: () => _showCustomAddDialog(category),
@@ -551,7 +528,6 @@ class _MentalHealthScreenState extends State<MentalHealthScreen> {
     );
   }
 
-  /// Builds an individual content card.
   Widget _buildContentCard(Map<String, dynamic> content) {
     final isMusicCategory = _selectedCategory == 'Music';
     final isPlayingThis =
@@ -633,7 +609,16 @@ class _MentalHealthScreenState extends State<MentalHealthScreen> {
                       _isPlaying = false;
                       _currentlyPlayingUrl = null;
                     }
-                    if (content['title'] == '5-Min Morning Calm') {
+
+                    // Handle Chat with Expert navigation
+                    if (_selectedCategory == 'Chat with Expert') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MentalSupportScreen()),
+                      );
+                    }
+                    else if (content['title'] == '5-Min Morning Calm') {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -664,8 +649,6 @@ class _MentalHealthScreenState extends State<MentalHealthScreen> {
                             builder: (context) => const HydrationChallengeScreen()),
                       );
                     }
-
-
                     else if (_selectedCategory == 'Travel / Tours' && content['title'] == 'Virtual Nature Walk') {
                       Navigator.push(context, MaterialPageRoute(builder: (_) => const VirtualNatureWalkPage()));
                     } else if (_selectedCategory == 'Travel / Tours' && content['title'] == 'Visual Relaxation') {
@@ -681,7 +664,6 @@ class _MentalHealthScreenState extends State<MentalHealthScreen> {
                     else if (_selectedCategory == 'Diet' && content['title'] == 'Gut Health Basics') {
                       Navigator.push(context, MaterialPageRoute(builder: (_) => const GutHealthBasicsPage()));
                     }
-
                     else if (_selectedCategory == 'Skincare' && content['title'] == 'Morning Glow (SPF)') {
                       Navigator.push(context, MaterialPageRoute(builder: (_) => const MorningGlowPage()));
                     } else if (_selectedCategory == 'Skincare' && content['title'] == 'Night Repair') {
@@ -689,8 +671,6 @@ class _MentalHealthScreenState extends State<MentalHealthScreen> {
                     } else if (_selectedCategory == 'Skincare' && content['title'] == 'Hydration Boost') {
                       Navigator.push(context, MaterialPageRoute(builder: (_) => const HydrationBoostPage()));
                     }
-
-
                     else if (content.containsKey('link') && content['link'] != null) {
                       _launchUrl(content['link'] as String);
                     } else {
@@ -722,10 +702,7 @@ class _MentalHealthScreenState extends State<MentalHealthScreen> {
   }
 }
 
-// ====================================================================
-// ANXIETY RELIEF SCREEN (Guided Breathing, Audio, and Progress Tracker)
-// ====================================================================
-
+// Rest of the code remains the same (AnxietyReliefScreen)
 class AnxietyReliefScreen extends StatefulWidget {
   const AnxietyReliefScreen({super.key});
 
@@ -737,9 +714,9 @@ class _AnxietyReliefScreenState extends State<AnxietyReliefScreen>
     with SingleTickerProviderStateMixin {
   final AudioPlayer _audioPlayer = AudioPlayer();
   bool _isPlaying = false;
-  bool _isSessionRunning = true; // Track if the session is running
+  bool _isSessionRunning = true;
   final String _audioUrl =
-      'https://cdn.pixabay.com/audio/2022/08/02/audio_d2b76c6e95.mp3'; // Sample calming audio
+      'https://cdn.pixabay.com/audio/2022/08/02/audio_d2b76c6e95.mp3';
   int _breathingCycles = 0;
   String _breathingPhase = 'Inhale';
   double _progress = 0.0;
@@ -751,7 +728,7 @@ class _AnxietyReliefScreenState extends State<AnxietyReliefScreen>
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 19), // Total: 4s inhale + 7s hold + 8s exhale
+      duration: const Duration(seconds: 19),
     )..addListener(() {
       setState(() {
         _progress = _animationController.value;
@@ -788,7 +765,6 @@ class _AnxietyReliefScreenState extends State<AnxietyReliefScreen>
     super.dispose();
   }
 
-  // Start or resume the breathing cycle
   void _startBreathingCycle() {
     _breathingTimer?.cancel();
     _animationController.forward();
@@ -797,7 +773,6 @@ class _AnxietyReliefScreenState extends State<AnxietyReliefScreen>
     });
   }
 
-  // Reset the entire session with confirmation dialog
   void _resetSession() {
     showDialog(
       context: context,
@@ -871,7 +846,6 @@ class _AnxietyReliefScreenState extends State<AnxietyReliefScreen>
     );
   }
 
-  // Toggle audio playback
   Future<void> _toggleAudio() async {
     try {
       if (_isPlaying) {
@@ -892,14 +866,13 @@ class _AnxietyReliefScreenState extends State<AnxietyReliefScreen>
     }
   }
 
-  // Get motivational message based on cycles completed
   String _getMotivationalMessage() {
     if (_breathingCycles < 2) {
       return 'Great start! Keep breathing to feel calmer.';
     } else if (_breathingCycles < 5) {
-      return 'Youâ€™re doing amazing! Feel the calm wash over you.';
+      return 'You are doing amazing! Feel the calm wash over you.';
     } else {
-      return 'Wow, youâ€™re a pro! Keep it up for ultimate relaxation.';
+      return 'Wow, you are a pro! Keep it up for ultimate relaxation.';
     }
   }
 
@@ -930,7 +903,6 @@ class _AnxietyReliefScreenState extends State<AnxietyReliefScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Breathing Animation
             Text(
               _breathingPhase,
               style: GoogleFonts.poppins(
@@ -982,7 +954,6 @@ class _AnxietyReliefScreenState extends State<AnxietyReliefScreen>
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 30),
-            // Audio Control
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -1022,7 +993,6 @@ class _AnxietyReliefScreenState extends State<AnxietyReliefScreen>
               ),
             ),
             const SizedBox(height: 20),
-            // Control Buttons
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
