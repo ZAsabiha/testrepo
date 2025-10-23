@@ -9,6 +9,8 @@ import 'month6.dart';
 import 'month7.dart';
 import 'month8.dart';
 import 'month9.dart';
+import 'preg_tracker.dart';  // Add this import
+import 'preg_aware.dart';  // Add this import
 
 class PregnancyApp extends StatefulWidget {
   const PregnancyApp({super.key});
@@ -69,7 +71,7 @@ class PregnancyMonthsPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
           onPressed: () {
-            Navigator.of(context).pop(); // Now correctly goes back to HerCareHomePage
+            Navigator.of(context).pop();
           },
         ),
         title: const Text(
@@ -89,7 +91,7 @@ class PregnancyMonthsPage extends StatelessWidget {
               icon: const Icon(Icons.logout, color: Colors.white),
               onPressed: () async {
                 final prefs = await SharedPreferences.getInstance();
-                await prefs.remove('userEmail'); // Clear login
+                await prefs.remove('userEmail');
                 if (context.mounted) {
                   Navigator.pushNamedAndRemoveUntil(
                       context, '/signup', (route) => false);
@@ -112,23 +114,52 @@ class PregnancyMonthsPage extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text(
-                    "Tracker",
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.9),
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const TrackerPage()),
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: const Text(
+                        "Tracker",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                   ),
-                  Text(
-                    "Awareness",
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.9),
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const AwarenessPage()),
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: const Text(
+                        "Awareness",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                   ),
-
                 ],
               ),
             ),
@@ -197,7 +228,6 @@ class PregnancyMonthsPage extends StatelessWidget {
                         ),
                       );
                     },
-
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
